@@ -13,12 +13,8 @@ namespace PresentationLayer
 {
     public partial class EditorGUI : Form
     {
-        #region MACHADO_Atributes
-
-        Bitmap map;
-        System.Drawing.Image Origin;
-
-        #endregion
+        private Bitmap currentBitmap;
+        private Image originalImage;
 
         public EditorGUI()
         {
@@ -27,58 +23,36 @@ namespace PresentationLayer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Origin = pictureBox1.Image;
-            Bitmap temp = new Bitmap(pictureBox1.Image,
-                new Size(pictureBox1.Width, pictureBox1.Height));
-            pictureBox1.Image = temp;
-            map = new Bitmap(pictureBox1.Image);
+            originalImage = pictureBox1.Image;
+            SetPictureBoxImage(originalImage);
         }
 
-        #region MACHADO_FileManagement
-
-        public void SaveImage()
+        private void SetPictureBoxImage(Image image)
         {
-            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
-            FolderBrowserDialog fl = new FolderBrowserDialog();
-            if (fl.ShowDialog() != DialogResult.Cancel)
+            if (pictureBox1.Image != originalImage)  // Ensure we're not disposing the original image
             {
-
-                pictureBox1.Image.Save(fl.SelectedPath + @"\" + textBox1.Text + @".png", System.Drawing.Imaging.ImageFormat.Png);
-            };
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-        }
-
-        public void LoadImage()
-        {
-            OpenFileDialog op = new OpenFileDialog();
-            DialogResult dr = op.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                string path = op.FileName;
-                pictureBox1.Load(path);
-                Bitmap temp = new Bitmap(pictureBox1.Image,
-                   new Size(pictureBox1.Width, pictureBox1.Height));
-                pictureBox1.Image = temp;
-                map = new Bitmap(pictureBox1.Image);
-                Origin = pictureBox1.Image;
+                pictureBox1.Image?.Dispose();
             }
+            currentBitmap = new Bitmap(image, pictureBox1.Size);
+            pictureBox1.Image = currentBitmap;
         }
-
-        #endregion
-
 
         #region MACHADO_Events
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            LoadImage();
+            var loadedImage = PictureManager.LoadImage();
+            if (loadedImage != null)
+            {
+                SetPictureBoxImage(loadedImage);
+                originalImage = pictureBox1.Image;
+            }
         }
-
 
         private void button14_Click(object sender, EventArgs e)
         {
-            SaveImage();
+            PictureManager.SaveImage(pictureBox1.Image);
         }
 
         #endregion
@@ -94,16 +68,17 @@ namespace PresentationLayer
         private void button13_Click(object sender, EventArgs e)
         {
 
-            pictureBox1.Image = Origin;
+            pictureBox1.Image = originalImage;
         }
 
         private void button16_Click(object sender, EventArgs e)
         {
-            pictureBox1.Image = Origin;
+            pictureBox1.Image = originalImage;
             pictureBox1.Image = ImageFilters.BlackWhite(new Bitmap(pictureBox1.Image));
         }
 
         #endregion
+
 
     }
 }
