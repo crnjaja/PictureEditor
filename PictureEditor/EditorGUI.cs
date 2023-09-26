@@ -12,10 +12,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 // TODO :
 // Finaliser le merge total
+// Ajouter edge detector
 // Ajouter le filtre en X et Y
 //  SAVE IMAGE ne fonctionne pas
 // Tester LOAD IMAGE
-// Ajouter edge detector
+
 
 namespace PresentationLayer
 {
@@ -36,7 +37,7 @@ namespace PresentationLayer
 
         // M E T H O D S
         /// <summary>
-        ///  Load the original image into the picture box
+        ///  Form load event handler, acts as the constructor for the form.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -54,16 +55,17 @@ namespace PresentationLayer
 
         }
 
+        #region initialisation
         /// <summary>
         /// Populate the filters list boxes with the available filters 
         /// </summary>
         private void PopulateFiltersListBoxes()
         {
-            // Remplissez listBox_XFilter & listBox_YFilter avec les valeurs de l'enum
+            // Fill listBox_XFilter & listBox_YFilter with enum values
             foreach (EdgeFinderAlgorithms algorithm in Enum.GetValues(typeof(EdgeFinderAlgorithms)))
             {
-                listBox_XFilter.Items.Add(algorithm);
-                listBox_YFilter.Items.Add(algorithm);
+                listBox_X_Algorithms.Items.Add(algorithm);
+                listBox_Y_Algorithms.Items.Add(algorithm);
             }
         }
 
@@ -80,6 +82,9 @@ namespace PresentationLayer
             currentBitmap = new Bitmap(image, pictureBox.Size);
             pictureBox.Image = currentBitmap;
         }
+
+        #endregion
+
 
         #region GroupBox_PictureData_LoadSave
 
@@ -100,6 +105,7 @@ namespace PresentationLayer
 
         #endregion
 
+
         #region GroupBox_Filters
 
         /// <summary>
@@ -111,6 +117,7 @@ namespace PresentationLayer
         {
             // new Bitmap(pictureBox.Image) creates a copy of the image in the picture box
             pictureBox.Image = ImageFilters.ApplyFilter(new Bitmap(pictureBox.Image), 1, 1, 10, 15);
+            groupBoxEdgesDetection.Enabled = true;
         }
 
         /// <summary>
@@ -121,42 +128,88 @@ namespace PresentationLayer
         private void btnFilterBlackWhite_Click(object sender, EventArgs e)
         {
             pictureBox.Image = ImageFilters.BlackWhite(new Bitmap(pictureBox.Image));
+            groupBoxEdgesDetection.Enabled = true;
         }
 
-        /// <summary>
-        /// Cancel the selected filters and display the original image in the picture box.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnCancelFilters_Click(object sender, EventArgs e)
-        {
-            pictureBox.Image = originalImage;
-        }
+    
 
         /// <summary>
-        /// Apply the selected filters to the image and display the result in the picture box.
+        /// Apply the selected filters X & Y to the image and display the result in the picture box.
         /// Enable now the Edge Detection group box to be used.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnApplyFilters_Click(object sender, EventArgs e)
+        private void btnApplyEdgeDetector_Click(object sender, EventArgs e)
         {
+            bool filtersApplied = false; // To track whether filters have been applied
 
 
-            /*
-            if (listBox_XFilter.SelectedItem.ToString().Length > 0 && listBox_YFilter.SelectedItem.ToString().Length > 0)
+            // Check that X and Y filters have been selected
+            if (listBox_X_Algorithms.SelectedItem != null &&
+                listBox_Y_Algorithms.SelectedItem != null)
             {
-                filter(listBoxXFilter.SelectedItem.ToString(), listBoxYFilter.SelectedItem.ToString());
-                ConvertToXYCoord(pictureBoxResult);
+                // Apply the selected filters to the image
+                string selectedXFilter = listBox_X_Algorithms.SelectedItem.ToString();
+                string selectedYFilter = listBox_Y_Algorithms.SelectedItem.ToString();
+
+                // Verify the checkbox value, and apply the filter accordingly (X, Y or the same)
+                if (checkBox_SameXY.Checked)
+                {
+                    //filter(selectedXFilter, selectedXFilter);
+
+                }
+                else
+                {
+                    //filter(selectedXFilter, selectedYFilter);
+                }
+
+               // ConvertToXYCoord(pictureBoxResult);
+
+                filtersApplied = true;
+            }
+
+            // If filters have been applied, enable the groupBoxEdgesDetection;
+            // otherwise, show an error message
+            if (filtersApplied)
+            {
+                groupBoxEdgesDetection.Enabled = true;
             }
             else
             {
-                labelErrors.Text = "2 filters must be selected";
-            }*/
+                MessageBox.Show("The image must be filtered first, or both X and Y filters must be selected.");
+            }
+        }
+
+        /// <summary>
+        /// If checked, disble the Y filter list box and set the Y filter to the same as the X filter.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkBox_SameXY_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox_SameXY.Checked)
+            {
+                listBox_Y_Algorithms.Enabled = false;
+                listBox_Y_Algorithms.SelectedItem = listBox_X_Algorithms.SelectedItem;
+            }
+            else
+            {
+                listBox_Y_Algorithms.Enabled = true;
+            }
         }
 
         #endregion
 
+        /// <summary>
+        /// Cancel the selected filters and edge detector, and display the original image in the picture box.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCancelFilters_MouseClick(object sender, MouseEventArgs e)
+        {
+            pictureBox.Image = originalImage;
+            groupBoxEdgesDetection.Enabled = false;
+        }
 
 
 

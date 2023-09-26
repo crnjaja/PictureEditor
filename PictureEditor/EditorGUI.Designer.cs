@@ -36,18 +36,20 @@
             pictureBox = new PictureBox();
             btnLoadImage = new Button();
             btnFilterHell = new Button();
-            btnCancelFilters = new Button();
             btnSaveImage = new Button();
             btnFilterBlackWhite = new Button();
             groupBoxPictureData = new GroupBox();
             groupBoxFilters = new GroupBox();
-            listBox_YFilter = new ListBox();
-            btnApplyFilters = new Button();
-            listBox_XFilter = new ListBox();
             groupBoxEdgesDetection = new GroupBox();
+            checkBox_SameXY = new CheckBox();
+            listBox_Y_Algorithms = new ListBox();
+            listBox_X_Algorithms = new ListBox();
+            btnApplyEdgeDetector = new Button();
+            btnCancelFilters = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             groupBoxPictureData.SuspendLayout();
             groupBoxFilters.SuspendLayout();
+            groupBoxEdgesDetection.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox
@@ -83,17 +85,6 @@
             btnFilterHell.Text = "Hell Filter";
             btnFilterHell.UseVisualStyleBackColor = true;
             btnFilterHell.Click += btnFilterHell_Click;
-            // 
-            // btnCancelFilters
-            // 
-            btnCancelFilters.Location = new Point(20, 412);
-            btnCancelFilters.Margin = new Padding(10, 8, 10, 8);
-            btnCancelFilters.Name = "btnCancelFilters";
-            btnCancelFilters.Size = new Size(340, 96);
-            btnCancelFilters.TabIndex = 34;
-            btnCancelFilters.Text = "Cancel";
-            btnCancelFilters.UseVisualStyleBackColor = true;
-            btnCancelFilters.Click += btnCancelFilters_Click;
             // 
             // btnSaveImage
             // 
@@ -132,60 +123,82 @@
             // 
             // groupBoxFilters
             // 
-            groupBoxFilters.Controls.Add(listBox_YFilter);
-            groupBoxFilters.Controls.Add(btnApplyFilters);
-            groupBoxFilters.Controls.Add(listBox_XFilter);
             groupBoxFilters.Controls.Add(btnFilterHell);
             groupBoxFilters.Controls.Add(btnFilterBlackWhite);
-            groupBoxFilters.Controls.Add(btnCancelFilters);
             groupBoxFilters.Location = new Point(1673, 407);
             groupBoxFilters.Margin = new Padding(10, 8, 10, 8);
             groupBoxFilters.Name = "groupBoxFilters";
             groupBoxFilters.Padding = new Padding(10, 8, 10, 8);
-            groupBoxFilters.Size = new Size(751, 524);
+            groupBoxFilters.Size = new Size(751, 256);
             groupBoxFilters.TabIndex = 41;
             groupBoxFilters.TabStop = false;
             groupBoxFilters.Text = "Filters";
             // 
-            // listBox_YFilter
-            // 
-            listBox_YFilter.FormattingEnabled = true;
-            listBox_YFilter.ItemHeight = 41;
-            listBox_YFilter.Location = new Point(391, 216);
-            listBox_YFilter.Name = "listBox_YFilter";
-            listBox_YFilter.Size = new Size(335, 168);
-            listBox_YFilter.TabIndex = 43;
-            // 
-            // btnApplyFilters
-            // 
-            btnApplyFilters.Location = new Point(391, 412);
-            btnApplyFilters.Margin = new Padding(10, 8, 10, 8);
-            btnApplyFilters.Name = "btnApplyFilters";
-            btnApplyFilters.Size = new Size(340, 96);
-            btnApplyFilters.TabIndex = 42;
-            btnApplyFilters.Text = "Apply";
-            btnApplyFilters.UseVisualStyleBackColor = true;
-            btnApplyFilters.Click += btnApplyFilters_Click;
-            // 
-            // listBox_XFilter
-            // 
-            listBox_XFilter.FormattingEnabled = true;
-            listBox_XFilter.ItemHeight = 41;
-            listBox_XFilter.Location = new Point(25, 216);
-            listBox_XFilter.Name = "listBox_XFilter";
-            listBox_XFilter.Size = new Size(335, 168);
-            listBox_XFilter.TabIndex = 40;
-            // 
             // groupBoxEdgesDetection
             // 
-            groupBoxEdgesDetection.Location = new Point(1673, 1110);
+            groupBoxEdgesDetection.Controls.Add(checkBox_SameXY);
+            groupBoxEdgesDetection.Controls.Add(listBox_Y_Algorithms);
+            groupBoxEdgesDetection.Controls.Add(listBox_X_Algorithms);
+            groupBoxEdgesDetection.Controls.Add(btnApplyEdgeDetector);
+            groupBoxEdgesDetection.Location = new Point(1673, 714);
             groupBoxEdgesDetection.Margin = new Padding(10, 8, 10, 8);
             groupBoxEdgesDetection.Name = "groupBoxEdgesDetection";
             groupBoxEdgesDetection.Padding = new Padding(10, 8, 10, 8);
-            groupBoxEdgesDetection.Size = new Size(751, 314);
+            groupBoxEdgesDetection.Size = new Size(751, 570);
             groupBoxEdgesDetection.TabIndex = 42;
             groupBoxEdgesDetection.TabStop = false;
             groupBoxEdgesDetection.Text = "Edges detector";
+            // 
+            // checkBox_SameXY
+            // 
+            checkBox_SameXY.AutoSize = true;
+            checkBox_SameXY.Location = new Point(20, 51);
+            checkBox_SameXY.Name = "checkBox_SameXY";
+            checkBox_SameXY.Size = new Size(501, 45);
+            checkBox_SameXY.TabIndex = 46;
+            checkBox_SameXY.Text = "Apply same algorithm for X and Y";
+            checkBox_SameXY.UseVisualStyleBackColor = true;
+            checkBox_SameXY.CheckedChanged += checkBox_SameXY_CheckedChanged;
+            // 
+            // listBox_Y_Algorithms
+            // 
+            listBox_Y_Algorithms.FormattingEnabled = true;
+            listBox_Y_Algorithms.ItemHeight = 41;
+            listBox_Y_Algorithms.Location = new Point(391, 109);
+            listBox_Y_Algorithms.Name = "listBox_Y_Algorithms";
+            listBox_Y_Algorithms.Size = new Size(340, 291);
+            listBox_Y_Algorithms.TabIndex = 45;
+            // 
+            // listBox_X_Algorithms
+            // 
+            listBox_X_Algorithms.FormattingEnabled = true;
+            listBox_X_Algorithms.ItemHeight = 41;
+            listBox_X_Algorithms.Location = new Point(20, 109);
+            listBox_X_Algorithms.Name = "listBox_X_Algorithms";
+            listBox_X_Algorithms.Size = new Size(340, 291);
+            listBox_X_Algorithms.TabIndex = 44;
+            // 
+            // btnApplyEdgeDetector
+            // 
+            btnApplyEdgeDetector.Location = new Point(20, 474);
+            btnApplyEdgeDetector.Margin = new Padding(10, 8, 10, 8);
+            btnApplyEdgeDetector.Name = "btnApplyEdgeDetector";
+            btnApplyEdgeDetector.Size = new Size(711, 96);
+            btnApplyEdgeDetector.TabIndex = 43;
+            btnApplyEdgeDetector.Text = "Apply";
+            btnApplyEdgeDetector.UseVisualStyleBackColor = true;
+            btnApplyEdgeDetector.Click += btnApplyEdgeDetector_Click;
+            // 
+            // btnCancelFilters
+            // 
+            btnCancelFilters.Location = new Point(1673, 1300);
+            btnCancelFilters.Margin = new Padding(10, 8, 10, 8);
+            btnCancelFilters.Name = "btnCancelFilters";
+            btnCancelFilters.Size = new Size(751, 124);
+            btnCancelFilters.TabIndex = 43;
+            btnCancelFilters.Text = "Cancel";
+            btnCancelFilters.UseVisualStyleBackColor = true;
+            btnCancelFilters.MouseClick += btnCancelFilters_MouseClick;
             // 
             // EditorGUI
             // 
@@ -193,6 +206,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             ClientSize = new Size(2460, 1481);
+            Controls.Add(btnCancelFilters);
             Controls.Add(groupBoxEdgesDetection);
             Controls.Add(groupBoxFilters);
             Controls.Add(groupBoxPictureData);
@@ -205,6 +219,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             groupBoxPictureData.ResumeLayout(false);
             groupBoxFilters.ResumeLayout(false);
+            groupBoxEdgesDetection.ResumeLayout(false);
+            groupBoxEdgesDetection.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -213,14 +229,15 @@
         private PictureBox pictureBox;
         private Button btnLoadImage;
         private Button btnFilterHell;
-        private Button btnCancelFilters;
         private Button btnSaveImage;
         private Button btnFilterBlackWhite;
         private GroupBox groupBoxPictureData;
         private GroupBox groupBoxFilters;
         private GroupBox groupBoxEdgesDetection;
-        private ListBox listBox_YFilter;
-        private Button btnApplyFilters;
-        private ListBox listBox_XFilter;
+        private ListBox listBox_Y_Algorithms;
+        private ListBox listBox_X_Algorithms;
+        private Button btnApplyEdgeDetector;
+        private CheckBox checkBox_SameXY;
+        private Button btnCancelFilters;
     }
 }
