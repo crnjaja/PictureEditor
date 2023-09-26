@@ -6,8 +6,17 @@ using System.Threading.Tasks;
 
 namespace PresentationLayer
 {
+    /// <summary>
+    /// Picture Manager class for loading and saving images from or to the file system.
+    /// OS supported : Windows 10 
+    /// </summary>
     public static class PictureManager
     {
+
+        /// <summary>
+        /// Load an image from the file system with a file dialog window 
+        /// </summary>
+        /// <returns>An image object of the loaded image file</returns>
         public static Image LoadImage()
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -22,6 +31,10 @@ namespace PresentationLayer
             }
         }
 
+        /// <summary>
+        /// Save an image to the file system with a file dialog window
+        /// </summary>
+        /// <param name="imageToSave"></param>
         public static void SaveImage(Image imageToSave)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
@@ -41,6 +54,12 @@ namespace PresentationLayer
                             break;
                     }
                     imageToSave.Save(saveFileDialog.FileName, format);
+
+                    // Show a message box to confirm the image was saved successfully.
+                    MessageBox.Show(
+                        "Image saved successfully!", 
+                        "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 }
             }
         }
