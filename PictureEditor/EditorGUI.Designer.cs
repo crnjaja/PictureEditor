@@ -41,6 +41,7 @@
             groupBoxPictureData = new GroupBox();
             groupBoxFilters = new GroupBox();
             groupBoxEdgesDetection = new GroupBox();
+            trackBarThreshold = new TrackBar();
             checkBox_SameXY = new CheckBox();
             listBox_Y_Algorithms = new ListBox();
             listBox_X_Algorithms = new ListBox();
@@ -50,6 +51,7 @@
             groupBoxPictureData.SuspendLayout();
             groupBoxFilters.SuspendLayout();
             groupBoxEdgesDetection.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarThreshold).BeginInit();
             SuspendLayout();
             // 
             // pictureBox
@@ -136,6 +138,7 @@
             // 
             // groupBoxEdgesDetection
             // 
+            groupBoxEdgesDetection.Controls.Add(trackBarThreshold);
             groupBoxEdgesDetection.Controls.Add(checkBox_SameXY);
             groupBoxEdgesDetection.Controls.Add(listBox_Y_Algorithms);
             groupBoxEdgesDetection.Controls.Add(listBox_X_Algorithms);
@@ -148,6 +151,17 @@
             groupBoxEdgesDetection.TabIndex = 42;
             groupBoxEdgesDetection.TabStop = false;
             groupBoxEdgesDetection.Text = "Edges detector";
+            // 
+            // trackBarThreshold
+            // 
+            trackBarThreshold.AutoSize = false;
+            trackBarThreshold.LargeChange = 10;
+            trackBarThreshold.Location = new Point(20, 412);
+            trackBarThreshold.Maximum = 255;
+            trackBarThreshold.Name = "trackBarThreshold";
+            trackBarThreshold.Size = new Size(711, 51);
+            trackBarThreshold.TabIndex = 12;
+            trackBarThreshold.Value = 100;
             // 
             // checkBox_SameXY
             // 
@@ -221,6 +235,7 @@
             groupBoxFilters.ResumeLayout(false);
             groupBoxEdgesDetection.ResumeLayout(false);
             groupBoxEdgesDetection.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBarThreshold).EndInit();
             ResumeLayout(false);
         }
 
@@ -239,5 +254,6 @@
         private Button btnApplyEdgeDetector;
         private CheckBox checkBox_SameXY;
         private Button btnCancelFilters;
+        private TrackBar trackBarThreshold;
     }
 }

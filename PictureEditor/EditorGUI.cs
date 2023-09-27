@@ -137,7 +137,7 @@ namespace PresentationLayer
             groupBoxEdgesDetection.Enabled = true;
         }
 
-    
+
 
         /// <summary>
         /// Apply the selected filters X & Y to the image and display the result in the picture box.
@@ -234,7 +234,7 @@ namespace PresentationLayer
                 return;
             }
 
-            ApplyFilters(xFilterMatrix, yFilterMatrix);
+            ApplyEdgeDetector(xFilterMatrix, yFilterMatrix);
         }
 
         private double[,] GetFilterMatrix(string filterName)
@@ -270,7 +270,7 @@ namespace PresentationLayer
             }
         }
 
-        private void ApplyFilters(double[,] xFilterMatrix, double[,] yFilterMatrix)
+        private void ApplyEdgeDetector(double[,] xFilterMatrix, double[,] yFilterMatrix)
         {
             Bitmap newBitmap = new Bitmap(currentBitmap);
             BitmapData bitmapData = newBitmap.LockBits(new Rectangle(0, 0, newBitmap.Width, newBitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
@@ -342,8 +342,9 @@ namespace PresentationLayer
             double redTotal = Math.Sqrt(redX * redX + redY * redY);
 
 
-            // trackBarThreshold est utilisé comme seuil pour déterminer si un pixel doit être considéré comme blanc (255) ou noir (0) dans la composante verte après l'opération de filtrage.
-            /*if (greenTotal < trackBarThreshold.Value)
+            // trackBarThreshold est utilisé comme seuil pour déterminer si un pixel doit être considéré
+            // comme blanc (255) ou noir (0) dans la composante verte après l'opération de filtrage.
+            if (greenTotal < trackBarThreshold.Value)
             {
                 greenTotal = 0;
             }
@@ -351,7 +352,7 @@ namespace PresentationLayer
             {
                 greenTotal = 255;
             }
-            */
+
 
             resultBuffer[byteOffset] = (byte)(blueX);
             resultBuffer[byteOffset + 1] = (byte)(greenTotal);
@@ -359,7 +360,7 @@ namespace PresentationLayer
             resultBuffer[byteOffset + 3] = 255;
         }
 
-      
+
 
 
     }
