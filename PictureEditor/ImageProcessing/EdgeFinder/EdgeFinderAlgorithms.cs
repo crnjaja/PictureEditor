@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PresentationLayer
+namespace PresentationLayer.Image.EdgeFinder
 {
     internal enum EdgeFinderAlgorithms
     {

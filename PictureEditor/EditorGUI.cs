@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PresentationLayer.Image.EdgeFinder;
+using PresentationLayer.Image.Filters;
+using PresentationLayer.ImageProcessing;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PresentationLayer
+namespace PresentationLayer.Image.Filters
 {
     /// <summary>
     /// Filter class for applying filters to images
@@ -26,19 +26,19 @@ namespace PresentationLayer
                 for (int x = 0; x < bmp.Height; x++)
                 {
 
-                    if (i < (raz))
+                    if (i < raz)
                     {
                         temp.SetPixel(i, x, Color.FromArgb(bmp.GetPixel(i, x).R / 5, bmp.GetPixel(i, x).G, bmp.GetPixel(i, x).B));
                     }
-                    else if (i < (raz * 2))
+                    else if (i < raz * 2)
                     {
                         temp.SetPixel(i, x, Color.FromArgb(bmp.GetPixel(i, x).R, bmp.GetPixel(i, x).G / 5, bmp.GetPixel(i, x).B));
                     }
-                    else if (i < (raz * 3))
+                    else if (i < raz * 3)
                     {
                         temp.SetPixel(i, x, Color.FromArgb(bmp.GetPixel(i, x).R, bmp.GetPixel(i, x).G, bmp.GetPixel(i, x).B / 5));
                     }
-                    else if (i < (raz * 4))
+                    else if (i < raz * 4)
                     {
                         temp.SetPixel(i, x, Color.FromArgb(bmp.GetPixel(i, x).R / 5, bmp.GetPixel(i, x).G, bmp.GetPixel(i, x).B / 5));
                     }
@@ -94,7 +94,7 @@ namespace PresentationLayer
                 for (int x = 0; x < Bmp.Width; x++)
                 {
                     c = Bmp.GetPixel(x, y);
-                    rgb = (int)((c.R + c.G + c.B) / 3);
+                    rgb = (c.R + c.G + c.B) / 3;
                     Bmp.SetPixel(x, y, Color.FromArgb(rgb, rgb, rgb));
                 }
             return Bmp;
@@ -209,35 +209,35 @@ namespace PresentationLayer
                     {
                         temp.SetPixel(i, x, bmp.GetPixel(i, x));
                     }
-                    else if (i < (razX * 2) && x < (razY))
+                    else if (i < razX * 2 && x < razY)
                     {
                         temp.SetPixel(i, x, bmp.GetPixel(x, i));
                     }
-                    else if (i < (razX * 3) && x < (razY))
+                    else if (i < razX * 3 && x < razY)
                     {
                         temp.SetPixel(i, x, bmp.GetPixel(i, x));
                     }
-                    else if (i < (razX) && x < (razY * 2))
+                    else if (i < razX && x < razY * 2)
                     {
                         temp.SetPixel(i, x, bmp.GetPixel(x, i));
                     }
-                    else if (i < (razX) && x < (razY * 3))
+                    else if (i < razX && x < razY * 3)
                     {
                         temp.SetPixel(i, x, bmp.GetPixel(i, x));
                     }
-                    else if (i < (razX * 2) && x < (razY * 2))
+                    else if (i < razX * 2 && x < razY * 2)
                     {
                         temp.SetPixel(i, x, bmp.GetPixel(i, x));
                     }
-                    else if (i < (razX * 4) && x < (razY * 1))
+                    else if (i < razX * 4 && x < razY * 1)
                     {
                         temp.SetPixel(i, x, bmp.GetPixel(i, x));
                     }
-                    else if (i < (razX * 4) && x < (razY * 2))
+                    else if (i < razX * 4 && x < razY * 2)
                     {
                         temp.SetPixel(i, x, bmp.GetPixel(x / 2, i / 2));
                     }
-                    else if (i < (razX * 4) && x < (razY * 3))
+                    else if (i < razX * 4 && x < razY * 3)
                     {
                         temp.SetPixel(i, x, bmp.GetPixel(x / 3, i / 3));
                     }

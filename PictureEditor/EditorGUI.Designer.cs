@@ -55,7 +55,7 @@
             // pictureBox
             // 
             pictureBox.BorderStyle = BorderStyle.FixedSingle;
-            pictureBox.Image = (Image)resources.GetObject("pictureBox.Image");
+            pictureBox.Image = (System.Drawing.Image)resources.GetObject("pictureBox.Image");
             pictureBox.Location = new Point(34, 77);
             pictureBox.Margin = new Padding(10, 8, 10, 8);
             pictureBox.Name = "pictureBox";

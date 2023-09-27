@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PresentationLayer
+namespace PresentationLayer.ImageProcessing
 {
     /// <summary>
     /// Picture Manager class for loading and saving images from or to the file system.
@@ -17,7 +18,7 @@ namespace PresentationLayer
         /// Load an image from the file system with a file dialog window 
         /// </summary>
         /// <returns>An image object of the loaded image file</returns>
-        public static Image LoadImage()
+        public static System.Drawing.Image LoadImage()
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -35,7 +36,7 @@ namespace PresentationLayer
         /// Save an image to the file system with a file dialog window
         /// </summary>
         /// <param name="imageToSave"></param>
-        public static void SaveImage(Image imageToSave)
+        public static void SaveImage(System.Drawing.Image imageToSave)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
             {
@@ -57,7 +58,7 @@ namespace PresentationLayer
 
                     // Show a message box to confirm the image was saved successfully.
                     MessageBox.Show(
-                        "Image saved successfully!", 
+                        "Image saved successfully!",
                         "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
