@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PresentationLayer.ImageProcessing;
+using PresentationLayer.ImageProcessing.EdgeDetector;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
@@ -16,6 +20,8 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 // Ajouter le filtre en X et Y
 //  SAVE IMAGE ne fonctionne pas
 // Tester LOAD IMAGE
+// README ET DIRE QUELLE IA j'AI UTILISÉ
+// File by file, demander si il y a erreurs, et améliorations possibles
 
 
 namespace PresentationLayer
@@ -155,15 +161,13 @@ namespace PresentationLayer
                 // Verify the checkbox value, and apply the filter accordingly (X, Y or the same)
                 if (checkBox_SameXY.Checked)
                 {
-                    //filter(selectedXFilter, selectedXFilter);
+                    Filter(selectedXFilter, selectedXFilter);
 
                 }
                 else
                 {
-                    //filter(selectedXFilter, selectedYFilter);
+                    Filter(selectedXFilter, selectedYFilter);
                 }
-
-               // ConvertToXYCoord(pictureBoxResult);
 
                 filtersApplied = true;
             }
@@ -212,7 +216,150 @@ namespace PresentationLayer
         }
 
 
+        // TODO : MOVE THIS IN ANOTHER CLASS
+        public void Filter(string xFilterName, string yFilterName)
+        {
+            if (currentBitmap == null)
+            {
+                MessageBox.Show("You must load an image");
+                return;
+            }
 
+            double[,] xFilterMatrix = GetFilterMatrix(xFilterName);
+            double[,] yFilterMatrix = GetFilterMatrix(yFilterName);
+
+            if (xFilterMatrix == null || yFilterMatrix == null)
+            {
+                MessageBox.Show("Invalid filter names");
+                return;
+            }
+
+            ApplyFilters(xFilterMatrix, yFilterMatrix);
+        }
+
+        private double[,] GetFilterMatrix(string filterName)
+        {
+            switch (filterName)
+            {
+                case "Laplacian3x3":
+                    return Matrix.Laplacian3x3;
+                case "Laplacian5x5":
+                    return Matrix.Laplacian5x5;
+                case "LaplacianOfGaussian":
+                    return Matrix.LaplacianOfGaussian;
+                case "Gaussian3x3":
+                    return Matrix.Gaussian3x3;
+                case "Gaussian5x5Type1":
+                    return Matrix.Gaussian5x5Type1;
+                case "Gaussian5x5Type2":
+                    return Matrix.Gaussian5x5Type2;
+                case "Sobel3x3Horizontal":
+                    return Matrix.Sobel3x3Horizontal;
+                case "Sobel3x3Vertical":
+                    return Matrix.Sobel3x3Vertical;
+                case "Prewitt3x3Horizontal":
+                    return Matrix.Prewitt3x3Horizontal;
+                case "Prewitt3x3Vertical":
+                    return Matrix.Prewitt3x3Vertical;
+                case "Kirsch3x3Horizontal":
+                    return Matrix.Kirsch3x3Horizontal;
+                case "Kirsch3x3Vertical":
+                    return Matrix.Kirsch3x3Vertical;
+                default:
+                    return Matrix.Laplacian3x3;
+            }
+        }
+
+        private void ApplyFilters(double[,] xFilterMatrix, double[,] yFilterMatrix)
+        {
+            Bitmap newBitmap = new Bitmap(currentBitmap);
+            BitmapData bitmapData = newBitmap.LockBits(new Rectangle(0, 0, newBitmap.Width, newBitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+
+            try
+            {
+                byte[] pixelBuffer = new byte[bitmapData.Stride * bitmapData.Height];
+                byte[] resultBuffer = new byte[bitmapData.Stride * bitmapData.Height];
+                Marshal.Copy(bitmapData.Scan0, pixelBuffer, 0, pixelBuffer.Length);
+
+                for (int offsetY = 1; offsetY < newBitmap.Height - 1; offsetY++)
+                {
+                    for (int offsetX = 1; offsetX < newBitmap.Width - 1; offsetX++)
+                    {
+                        ApplyFiltersToPixel(offsetX, offsetY, bitmapData, pixelBuffer, resultBuffer, xFilterMatrix, yFilterMatrix);
+                    }
+                }
+
+                Bitmap resultBitmap = new Bitmap(newBitmap.Width, newBitmap.Height);
+                BitmapData resultData = resultBitmap.LockBits(new Rectangle(0, 0, resultBitmap.Width, resultBitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+                try
+                {
+                    Marshal.Copy(resultBuffer, 0, resultData.Scan0, resultBuffer.Length);
+                }
+                finally
+                {
+                    resultBitmap.UnlockBits(resultData);
+                }
+
+                currentBitmap = resultBitmap;
+            }
+            finally
+            {
+                newBitmap.UnlockBits(bitmapData);
+            }
+        }
+
+        private void ApplyFiltersToPixel(int x, int y, BitmapData bitmapData, byte[] pixelBuffer, byte[] resultBuffer, double[,] xFilterMatrix, double[,] yFilterMatrix)
+        {
+            double blueX = 0.0;
+            double greenX = 0.0;
+            double redX = 0.0;
+
+            double blueY = 0.0;
+            double greenY = 0.0;
+            double redY = 0.0;
+
+            int filterOffset = 1;
+            int byteOffset = y * bitmapData.Stride + x * 4;
+
+            for (int filterY = -filterOffset; filterY <= filterOffset; filterY++)
+            {
+                for (int filterX = -filterOffset; filterX <= filterOffset; filterX++)
+                {
+                    int calcOffset = byteOffset + (filterX * 4) + (filterY * bitmapData.Stride);
+
+                    blueX += pixelBuffer[calcOffset] * xFilterMatrix[filterY + filterOffset, filterX + filterOffset];
+                    greenX += pixelBuffer[calcOffset + 1] * xFilterMatrix[filterY + filterOffset, filterX + filterOffset];
+                    redX += pixelBuffer[calcOffset + 2] * xFilterMatrix[filterY + filterOffset, filterX + filterOffset];
+
+                    blueY += pixelBuffer[calcOffset] * yFilterMatrix[filterY + filterOffset, filterX + filterOffset];
+                    greenY += pixelBuffer[calcOffset + 1] * yFilterMatrix[filterY + filterOffset, filterX + filterOffset];
+                    redY += pixelBuffer[calcOffset + 2] * yFilterMatrix[filterY + filterOffset, filterX + filterOffset];
+                }
+            }
+
+            double greenTotal = Math.Sqrt(greenX * greenX + greenY * greenY);
+            double redTotal = Math.Sqrt(redX * redX + redY * redY);
+
+
+            // trackBarThreshold est utilisé comme seuil pour déterminer si un pixel doit être considéré comme blanc (255) ou noir (0) dans la composante verte après l'opération de filtrage.
+            /*if (greenTotal < trackBarThreshold.Value)
+            {
+                greenTotal = 0;
+            }
+            else
+            {
+                greenTotal = 255;
+            }
+            */
+
+            resultBuffer[byteOffset] = (byte)(blueX);
+            resultBuffer[byteOffset + 1] = (byte)(greenTotal);
+            resultBuffer[byteOffset + 2] = (byte)(redTotal);
+            resultBuffer[byteOffset + 3] = 255;
+        }
+
+      
 
 
     }

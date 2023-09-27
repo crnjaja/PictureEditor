@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PresentationLayer
+namespace PresentationLayer.ImageProcessing
 {
     /// <summary>
     /// Picture Manager class for loading and saving images from or to the file system.
@@ -57,7 +57,7 @@ namespace PresentationLayer
 
                     // Show a message box to confirm the image was saved successfully.
                     MessageBox.Show(
-                        "Image saved successfully!", 
+                        "Image saved successfully!",
                         "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
