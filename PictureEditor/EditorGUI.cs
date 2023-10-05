@@ -14,16 +14,6 @@ using PresentationLayer.ImageProcessing.EdgeDetector;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
-// TODO :
-// Finaliser le merge total
-// Ajouter edge detector
-// Ajouter le filtre en X et Y
-//  SAVE IMAGE ne fonctionne pas
-// Tester LOAD IMAGE
-// README ET DIRE QUELLE IA j'AI UTILISÉ
-// File by file, demander si il y a erreurs, et améliorations possibles
-
-
 namespace PresentationLayer
 {
     /// <summary>
@@ -177,6 +167,7 @@ namespace PresentationLayer
             if (filtersApplied)
             {
                 groupBoxEdgesDetection.Enabled = true;
+                pictureBox.Image = currentBitmap; // Display the filtered image in the picture box
             }
             else
             {
@@ -216,7 +207,12 @@ namespace PresentationLayer
         }
 
 
-        // TODO : MOVE THIS IN ANOTHER CLASS
+      
+        /// <summary>
+        /// Apply the selected filters to the image and display the result in the picture box.
+        /// </summary>
+        /// <param name="xFilterName"></param>
+        /// <param name="yFilterName"></param>
         public void Filter(string xFilterName, string yFilterName)
         {
             if (currentBitmap == null)
@@ -270,6 +266,11 @@ namespace PresentationLayer
             }
         }
 
+        /// <summary>
+        ///  Apply the selected filters to the image and display the result in the picture box.
+        /// </summary>
+        /// <param name="xFilterMatrix"></param>
+        /// <param name="yFilterMatrix"></param>
         private void ApplyEdgeDetector(double[,] xFilterMatrix, double[,] yFilterMatrix)
         {
             Bitmap newBitmap = new Bitmap(currentBitmap);
@@ -277,7 +278,7 @@ namespace PresentationLayer
 
             try
             {
-                byte[] pixelBuffer = new byte[bitmapData.Stride * bitmapData.Height];
+                byte[] pixelBuffer  = new byte[bitmapData.Stride * bitmapData.Height];
                 byte[] resultBuffer = new byte[bitmapData.Stride * bitmapData.Height];
                 Marshal.Copy(bitmapData.Scan0, pixelBuffer, 0, pixelBuffer.Length);
 
@@ -285,7 +286,9 @@ namespace PresentationLayer
                 {
                     for (int offsetX = 1; offsetX < newBitmap.Width - 1; offsetX++)
                     {
-                        ApplyFiltersToPixel(offsetX, offsetY, bitmapData, pixelBuffer, resultBuffer, xFilterMatrix, yFilterMatrix);
+                        ApplyFiltersToPixel(offsetX, offsetY,
+                                                        bitmapData, pixelBuffer, resultBuffer, 
+                                                        xFilterMatrix, yFilterMatrix);
                     }
                 }
 
@@ -301,6 +304,7 @@ namespace PresentationLayer
                     resultBitmap.UnlockBits(resultData);
                 }
 
+                // update the current bitmap with the result
                 currentBitmap = resultBitmap;
             }
             finally
