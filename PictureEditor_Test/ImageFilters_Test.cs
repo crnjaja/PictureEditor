@@ -69,75 +69,11 @@ namespace PictureEditor_Test
 
             // 3) Compare the 2 images pixel by pixel to see if they are the same, there is a tolerance of 1 RGB value for each pixel
             int tolerance = 1;
-            Assert.IsTrue(CompareImages(bwFilterApplied, imageTest, tolerance));
-        }
-
-        [TestMethod]
-        public void TestEdgeDetectorAlgo_()
-        {
-            // 1) Load images
-            Bitmap bwFilterApplied = new Bitmap(BlackWhitePath);         // 1) Load the image with the filter already applied
-            Bitmap imageTest = new Bitmap(OriginalPath);                        // 2) Load the original image to modify and then compare with the other image
-
-            // Get the matrix
-            double[,] xFilterMatrix = GetFilterMatrix(xFilterName);
-            double[,] yFilterMatrix = GetFilterMatrix(yFilterName);
-
-            if (xFilterMatrix == null || yFilterMatrix == null)
-            {
-                MessageBox.Show("Invalid filter names");
-                return;
-            }
-
-            // 2) Apply the algorithm
-            imageTest = ApplyEdgeDetector(xFilterMatrix, yFilterMatrix);
-
-            // 3) Compare the 2 images pixel by pixel to see if they are the same, there is a tolerance of 1 RGB value for each pixel
-            int tolerance = 1;
-            Assert.IsTrue(CompareImages(bwFilterApplied, imageTest, tolerance));
+            Assert.IsTrue(util.CompareImages(bwFilterApplied, imageTest, tolerance));
         }
 
 
-        /// <summary>
-        /// Compares two images pixel by pixel to check if they are identical.
-        /// </summary>
-        /// <param name="imageA">The first image to compare.</param>
-        /// <param name="imageB">The second image to compare.</param>
-        /// <returns>True if the images are identical; otherwise, false.</returns>
-        private bool CompareImages(Bitmap imageA, Bitmap imageB, int tolerance)
-        {
-            // Check if the images have the same dimensions
-            if (imageA.Width != imageB.Width ||
-                imageA.Height != imageB.Height)
-            {
-                return false;
-            }
-
-            // Iterate through each pixel and compare colors
-            for (int i = 0; i < imageA.Width; i++)
-            {
-                for (int j = 0; j < imageA.Height; j++)
-                {
-                    // Get the color of the pixel in each image
-                    Color pixelColorA = imageA.GetPixel(i, j);
-                    Color pixelColorB = imageB.GetPixel(i, j);
-
-                    // Compare color components with tolerance
-                    if (Math.Abs(pixelColorA.R - pixelColorB.R) > tolerance ||
-                        Math.Abs(pixelColorA.G - pixelColorB.G) > tolerance ||
-                        Math.Abs(pixelColorA.B - pixelColorB.B) > tolerance ||
-                        Math.Abs(pixelColorA.A - pixelColorB.A) > tolerance)
-                    {
-                        // If the difference in any color component is greater than the tolerance, the images are not identical
-                        return false;
-                    }
-                }
-            }
-
-            // If all pixels are within the tolerance range, the images are considered the same
-            return true;
-        }
-
+        
 
     }
 }
