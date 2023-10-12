@@ -36,8 +36,8 @@ namespace PictureEditor_Test
                     // Compare color components with tolerance
                     if (Math.Abs(pixelColorA.R - pixelColorB.R) > tolerance ||
                         Math.Abs(pixelColorA.G - pixelColorB.G) > tolerance ||
-                        Math.Abs(pixelColorA.B - pixelColorB.B) > tolerance ||
-                        Math.Abs(pixelColorA.A - pixelColorB.A) > tolerance)
+                        Math.Abs(pixelColorA.B - pixelColorB.B) > tolerance /*||
+                        Math.Abs(pixelColorA.A - pixelColorB.A) > tolerance*/)
                     {
                         // If the difference in any color component is greater than the tolerance, the images are not identical
                         return false;

@@ -43,6 +43,15 @@
     <None Update="Ressources\FilterHell.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Ressources\Hell_ForAlgo.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Ressources\Hell_ForAlgo.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Ressources\Hell_ForAlgo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Ressources\Hell_Laplacian3x3.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

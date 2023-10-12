@@ -50,7 +50,7 @@ namespace PictureEditor_Test
 
             // 3) Compare the 2 images pixel by pixel to see if they are the same, there is a tolerance of 1 RGB value for each pixel
             int tolerance = 1;
-            Assert.IsTrue(CompareImages(hellFilterApplied, imageTest, tolerance));
+            Assert.IsTrue(util.CompareImages(hellFilterApplied, imageTest, tolerance));
         }
 
         /// <summary>

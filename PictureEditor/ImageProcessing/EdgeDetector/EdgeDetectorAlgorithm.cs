@@ -24,7 +24,9 @@ namespace PresentationLayer.ImageProcessing.EdgeDetector
             Bitmap newBitmap = new Bitmap(inputCurrentBitmap);
 
             // Lock the bits of the new bitmap for reading and writing
-            BitmapData bitmapData = newBitmap.LockBits(new Rectangle(0, 0, newBitmap.Width, newBitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+            BitmapData bitmapData = newBitmap.LockBits(new Rectangle(0, 0, newBitmap.Width, newBitmap.Height), 
+                                                                                         ImageLockMode.ReadOnly, 
+                                                                                         PixelFormat.Format32bppPArgb);
 
             // Create a result bitmap with the same dimensions as the input bitmap
             Bitmap resultBitmap = new Bitmap(newBitmap.Width, newBitmap.Height);
@@ -32,16 +34,18 @@ namespace PresentationLayer.ImageProcessing.EdgeDetector
             try
             {
                 // Create buffers to store pixel data
-                byte[] pixelBuffer = new byte[bitmapData.Stride * bitmapData.Height];
+                byte[] pixelBuffer  = new byte[bitmapData.Stride * bitmapData.Height];
                 byte[] resultBuffer = new byte[bitmapData.Stride * bitmapData.Height];
 
                 // Copy pixel data from the input bitmap to the pixel buffer
                 Marshal.Copy(bitmapData.Scan0, pixelBuffer, 0, pixelBuffer.Length);
 
                 // Apply edge detection filters to each pixel of the bitmap
-                for (int offsetY = 1; offsetY < newBitmap.Height - 1; offsetY++)
+                // the offset is set to 1 to avoid the edges of the image
+                // the height and width are set to -1 to avoid the edges of the image
+                for (int offsetY = 1; offsetY < newBitmap.Height -1 ; offsetY++)
                 {
-                    for (int offsetX = 1; offsetX < newBitmap.Width - 1; offsetX++)
+                    for (int offsetX = 1; offsetX < newBitmap.Width -1 ; offsetX++)
                     {
                         // Apply filters to the current pixel
                         ApplyFiltersToPixel(offsetX, offsetY, bitmapData, pixelBuffer, resultBuffer, xFilterMatrix, yFilterMatrix, threshold);
@@ -49,7 +53,9 @@ namespace PresentationLayer.ImageProcessing.EdgeDetector
                 }
 
                 // Lock the bits of the result bitmap for writing
-                BitmapData resultData = resultBitmap.LockBits(new Rectangle(0, 0, resultBitmap.Width, resultBitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+                BitmapData resultData = resultBitmap.LockBits(new Rectangle(0, 0, resultBitmap.Width, resultBitmap.Height), 
+                                                                                            ImageLockMode.WriteOnly, 
+                                                                                            PixelFormat.Format32bppArgb);
 
                 try
                 {
@@ -125,7 +131,7 @@ namespace PresentationLayer.ImageProcessing.EdgeDetector
 
             // Calculate the total intensity values after applying filters
             double greenTotal = Math.Sqrt(greenX * greenX + greenY * greenY);
-            double redTotal = Math.Sqrt(redX * redX + redY * redY);
+            double redTotal = Math.Sqrt(redX * redX + redY * redY); 
 
             // Determine whether the pixel should be considered an edge based on the threshold value
             // trackBarThreshold est utilisé comme seuil pour déterminer si un pixel doit être considéré
