@@ -151,12 +151,12 @@ namespace PresentationLayer
                 // Verify the checkbox value, and apply the filter accordingly (X, Y or the same)
                 if (checkBox_SameXY.Checked)
                 {
-                    Filter(selectedXFilter, selectedXFilter);
+                    FilterWithAlgorithm(selectedXFilter, selectedXFilter);
 
                 }
                 else
                 {
-                    Filter(selectedXFilter, selectedYFilter);
+                    FilterWithAlgorithm(selectedXFilter, selectedYFilter);
                 }
 
                 filtersApplied = true;
@@ -213,7 +213,7 @@ namespace PresentationLayer
         /// </summary>
         /// <param name="xFilterName"></param>
         /// <param name="yFilterName"></param>
-        public void Filter(string xFilterName, string yFilterName)
+        public void FilterWithAlgorithm(string xFilterName, string yFilterName)
         {
             if (currentBitmap == null)
             {
@@ -271,10 +271,11 @@ namespace PresentationLayer
         /// </summary>
         /// <param name="xFilterMatrix"></param>
         /// <param name="yFilterMatrix"></param>
-        private void ApplyEdgeDetector(double[,] xFilterMatrix, double[,] yFilterMatrix)
+        private Bitmap ApplyEdgeDetector(double[,] xFilterMatrix, double[,] yFilterMatrix)
         {
             Bitmap newBitmap = new Bitmap(currentBitmap);
             BitmapData bitmapData = newBitmap.LockBits(new Rectangle(0, 0, newBitmap.Width, newBitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+            Bitmap resultBitmap = new Bitmap(newBitmap.Width, newBitmap.Height);
 
             try
             {
@@ -292,7 +293,6 @@ namespace PresentationLayer
                     }
                 }
 
-                Bitmap resultBitmap = new Bitmap(newBitmap.Width, newBitmap.Height);
                 BitmapData resultData = resultBitmap.LockBits(new Rectangle(0, 0, resultBitmap.Width, resultBitmap.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
                 try
@@ -311,6 +311,8 @@ namespace PresentationLayer
             {
                 newBitmap.UnlockBits(bitmapData);
             }
+            return resultBitmap;
+
         }
 
         private void ApplyFiltersToPixel(int x, int y, BitmapData bitmapData, byte[] pixelBuffer, byte[] resultBuffer, double[,] xFilterMatrix, double[,] yFilterMatrix)

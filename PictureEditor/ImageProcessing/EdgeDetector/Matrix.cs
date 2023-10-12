@@ -12,7 +12,7 @@ namespace PresentationLayer.ImageProcessing.EdgeDetector
     /// 
     /// All matrices are square. All of them are 3x3 or 5x5. All of them return a matrix.
     /// </summary>
-    internal class Matrix
+    public class Matrix
     {
 
         public static double[,] Laplacian3x3
