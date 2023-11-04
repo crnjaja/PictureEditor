@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PictureEditor\PresentationLayer.csproj" />
+    <ProjectReference Include="..\PictureEditor\PictureEditor.csproj" />
   </ItemGroup>
 
   <ItemGroup>

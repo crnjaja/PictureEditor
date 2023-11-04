@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationLayer", "PictureEditor\PresentationLayer.csproj", "{6E3334F9-F856-4B56-83AF-9517269154F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureEditor", "PictureEditor\PictureEditor.csproj", "{6E3334F9-F856-4B56-83AF-9517269154F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PictureEditor_Test", "PictureEditor_Test\PictureEditor_Test.csproj", "{5EE5C254-A85B-4A46-923A-03A15C9F04AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PictureEditor_Test", "PictureEditor_Test\PictureEditor_Test.csproj", "{5EE5C254-A85B-4A46-923A-03A15C9F04AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
